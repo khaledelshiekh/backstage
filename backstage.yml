@@ -1,5 +1,5 @@
 parameters:
-  - title: Provide Information for Application by khaled
+  - title: Provide Information for Application
     required:
       - component_id
       - java_package_name
@@ -7,7 +7,7 @@ parameters:
       component_id:
         title: Name
         type: string
-        description: Unique name of the component by khaled
+        description: Unique name of the component
         default: my-quarkus-app
         ui:field: EntityNamePicker
         maxLength: 14
@@ -15,7 +15,7 @@ parameters:
         title: Group Id
         type: string
         default: redhat.janus
-        description: Maven Group Id by khaled
+        description: Maven Group Id
       artifact_id:
         title: Artifact Id
         type: string
@@ -25,13 +25,13 @@ parameters:
         title: Java Package Name
         default: org.redhat.janus
         type: string
-        description: Name for the java package. eg (com.redhat.blah) by khaled
+        description: Name for the java package. eg (com.redhat.blah)
       description:
         title: Description
         type: string
         description: Help others understand what this website is for.
         default: A cool quarkus app
-  - title: Provide Image Registry Information by khaled
+  - title: Provide Image Registry Information
     required:
       - image_registry
     properties:
@@ -49,7 +49,7 @@ parameters:
                 enum:
                   - Openshift
               image_host:
-                title: Image Host by khaled
+                title: Image Host
                 type: string
                 description: Host for storing image
                 default: image-registry.openshift-image-registry.svc:5000
@@ -63,12 +63,12 @@ parameters:
                 enum:
                   - Quay
               image_host:
-                title: Image Host by khaled
+                title: Image Host
                 type: string
                 description: Host for storing image
-                default: quay-5k925.apps.cluster-5k925.sandbox879.opentlc.com
+                default: quay-srm9b.apps.cluster-srm9b.sandbox171.opentlc.com
               image_organization:
-                title: Organization by khaled
+                title: Organization
                 type: string
                 description: Name of the Quay Organization
                 default: quayadmin
@@ -77,7 +77,7 @@ parameters:
                 default: latest
                 type: string
                 description: Build Image tag
-  - title: Application repository Information by khaled
+  - title: Application repository Information
     required:
       - repo
     properties:
@@ -89,9 +89,9 @@ parameters:
             title: Repo Host
             type: string
             description: Your SCM host
-            default: gitlab-gitlab.apps.cluster-5k925.sandbox879.opentlc.com
+            default: gitlab-gitlab.apps.cluster-srm9b.sandbox171.opentlc.com
             enum:
-              - gitlab-gitlab.apps.cluster-5k925.sandbox879.opentlc.com
+              - gitlab-gitlab.apps.cluster-srm9b.sandbox171.opentlc.com
           owner:
             title: Repo Owner
             type: string
@@ -105,7 +105,7 @@ steps:
     action: fetch:template
     input:
       url: ./skeleton
-      copyWithoutTemplating:
+      copyWithoutRender:
         - .github/workflows/*
       values:
         component_id: ${{ parameters.component_id }}
@@ -115,7 +115,7 @@ steps:
         artifact_id: ${{ parameters.artifact_id }}
         java_package_name: ${{ parameters.java_package_name }}
         owner: ${{ user.entity.metadata.name }}
-        cluster: .apps.cluster-5k925.sandbox879.opentlc.com
+        cluster: .apps.cluster-srm9b.sandbox171.opentlc.com
         host: ${{ parameters.repo.host }}
         destination: ${{ parameters.repo.owner }}/${{ parameters.component_id }}
         quay_destination: ${{ parameters.image_organization}}/${{ parameters.component_id }}
@@ -148,7 +148,7 @@ steps:
           }}/${{parameters.component_id}}.git
         repository_name: ${{parameters.component_id}}
         git_owner: ${{ parameters.repo.owner }}
-        cluster: .apps.cluster-5k925.sandbox879.opentlc.com
+        cluster: .apps.cluster-srm9b.sandbox171.opentlc.com
         namespace: ${{ parameters.component_id }}-dev
         image_registry: ${{ parameters.image_registry }}
         image_host: ${{ parameters.image_host }}
@@ -158,6 +158,7 @@ steps:
         port: 8080
         repository_host: ${{ parameters.repo.host }}
         deployment_name: quarkus-template
+        user: ${{ user.entity.metadata.name }}
       targetPath: ./tenant-gitops
   - id: publish-gitops
     name: Publishing to Resource Repository
